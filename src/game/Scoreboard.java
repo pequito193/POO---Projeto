@@ -1,4 +1,4 @@
-package pt.iscte.poo.game;
+package game;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import comparator.IntegerAscendingComparator;
-import pt.iscte.poo.utils.Utils;
+import utils.Utils;
 
 public class Scoreboard {
 	public static enum Stage {

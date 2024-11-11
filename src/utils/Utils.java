@@ -1,4 +1,4 @@
-package pt.iscte.poo.utils;
+package utils;
 
 public class Utils {
 	public static String timeToString(int time) {
