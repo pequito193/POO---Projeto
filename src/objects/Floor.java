@@ -5,7 +5,9 @@ import pt.iscte.poo.utils.Point2D;
 
 public class Floor implements ImageTile {
 
-	public Floor() {
+	private Point2D position;
+	public Floor(Point2D position) {
+		this.position = position;
 	}
 
 	@Override
@@ -20,8 +22,8 @@ public class Floor implements ImageTile {
 
 	@Override
 	public Point2D getPosition() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return this.position;
 	}
 
 
