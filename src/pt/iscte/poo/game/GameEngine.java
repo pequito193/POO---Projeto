@@ -1,5 +1,7 @@
 package pt.iscte.poo.game;
 
+import java.io.IOException;
+
 import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.observer.Observed;
 import pt.iscte.poo.observer.Observer;
@@ -7,11 +9,12 @@ import pt.iscte.poo.utils.Direction;
 
 public class GameEngine implements Observer {
 	
-	private Room currentRoom = new Room();
+	private Room currentRoom;
 	private int lastTickProcessed = 0;
 	
-	public GameEngine() {
+	public GameEngine() throws IOException {
 		ImageGUI.getInstance().update();
+		currentRoom= new Room("././rooms/room0.txt");
 	}
 
 	@Override
@@ -22,7 +25,7 @@ public class GameEngine implements Observer {
 			System.out.println("Keypressed " + k);
 			if (Direction.isDirection(k)) {
 				System.out.println("Direction! ");
-				currentRoom.moveManel();
+				currentRoom.moveManel(Direction.directionFor(k));
 			}
 		}
 		int t = ImageGUI.getInstance().getTicks();

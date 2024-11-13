@@ -24,12 +24,11 @@ public class Manel implements ImageTile {
 
 	@Override
 	public int getLayer() {
-		// TODO Auto-generated method stub
-		return 1;
+		return 0;
 	}
 
-	public void move() {
-		position = position.plus(Direction.random().asVector());	
+	public void move(Direction direction) {
+	    position = position.plus(direction.asVector());
 	}
 	
 }
