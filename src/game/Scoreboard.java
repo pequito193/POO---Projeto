@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import comparator.IntegerAscendingComparator;
+import utils.IntegerAscendingComparator;
 import utils.Utils;
 
 public class Scoreboard {
