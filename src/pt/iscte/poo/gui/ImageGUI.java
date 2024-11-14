@@ -29,7 +29,7 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 
 import pt.iscte.poo.observer.Observed;
-import pt.iscte.poo.utils.Point2D;
+import utils.Point2D;
 
 /**
  * @author POO 2024

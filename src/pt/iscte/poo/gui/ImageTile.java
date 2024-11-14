@@ -1,6 +1,6 @@
 package pt.iscte.poo.gui;
 
-import pt.iscte.poo.utils.Point2D;
+import utils.Point2D;
 
 /**
  * @author POO2016
