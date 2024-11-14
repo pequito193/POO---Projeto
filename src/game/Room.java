@@ -11,6 +11,7 @@ import gameObjects.Background;
 import gameObjects.DonkeyKong;
 import gameObjects.Door;
 import gameObjects.GameObject;
+import gameObjects.GameObject.GameObjectType;
 import gameObjects.Ladder;
 import gameObjects.Meat;
 import gameObjects.Player;
@@ -28,6 +29,7 @@ public class Room {
 		TWO,
 		THREE,
 	}
+	
 	public static final int MIN_POSITION = 0;
 	public static final int MAX_POSITION = 9;
 	public static final int ROOM_SIZE = 10;
@@ -39,6 +41,10 @@ public class Room {
 		this.room = new GameObject[ROOM_SIZE][ROOM_SIZE];
 		readRoomFile(filename);
 		createObjects();
+	}
+	
+	public GameObject[][] getRoomLayout() {
+		return this.room;
 	}
 	
 	private void readRoomFile(String filename) throws IOException {
@@ -90,6 +96,7 @@ public class Room {
 					this.room[row][col] = new Door(position);
 					break;
 				default:
+					this.room[row][col] = new Background(position);
 					break;
 			}
 		}
@@ -105,7 +112,8 @@ public class Room {
 		for (int i = 0; i < room.length; i++) {
 			for (int j = 0; j < room[i].length; j++) {
 				GameObject gameObject = this.room[i][j];
-				if (gameObject != null) {
+				// Do not redraw background tiles
+				if (gameObject.getObjectType() != GameObjectType.STATIC) {
 					ImageGUI.getInstance().addImage(gameObject);
 				}
 			}

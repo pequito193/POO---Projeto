@@ -23,11 +23,14 @@ public class Character extends GameObject {
 		return this.damage;
 	}
 	
-	public void move(Direction direction) {
+	public void move(Direction direction, GameObject[][] room) {
 		Point2D newPosition = super.getPosition().plus(direction.asVector());
 	    if (newPosition.getX() >= Room.MIN_POSITION  && newPosition.getX() <= Room.MAX_POSITION &&
 	        newPosition.getY() >= Room.MIN_POSITION && newPosition.getY() <= Room.MAX_POSITION) {
-	    	super.setPosition(super.getPosition().plus(direction.asVector()));
+	    	// TODO: melhorar esta logica
+	    	if (room[newPosition.getX()][newPosition.getY()].getObjectType() != GameObjectType.INTRESPASSABLE) {
+	    		super.setPosition(super.getPosition().plus(direction.asVector()));
+	    	}
 	    }
 	}
 	
