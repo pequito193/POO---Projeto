@@ -46,22 +46,12 @@ public class Room {
 		
 		// TODO: parse first line
 		String firstLine = scanner.nextLine();
-		//this.roomNumber = 
+		// this.roomNumber = 
 		
 		int i = 0;
 		while (scanner.hasNextLine()) {
 			readLine(scanner.nextLine(), i);
 			i++;
-		}
-		
-		//print();
-	}
-	
-	private void print() {
-		for (int i = 0; i < room.length; i++) {
-			for (int j = 0; j < room[i].length; j++) {
-				System.out.println(room[i][j].toString());
-			}
 		}
 	}
 	
@@ -100,7 +90,7 @@ public class Room {
 					this.room[row][col] = new Door(position);
 					break;
 				default:
-					this.room[row][col] = new Background(position);
+					break;
 			}
 		}
 	}
@@ -115,7 +105,9 @@ public class Room {
 		for (int i = 0; i < room.length; i++) {
 			for (int j = 0; j < room[i].length; j++) {
 				GameObject gameObject = this.room[i][j];
-				ImageGUI.getInstance().addImage(gameObject);
+				if (gameObject != null) {
+					ImageGUI.getInstance().addImage(gameObject);
+				}
 			}
 		}
 	}

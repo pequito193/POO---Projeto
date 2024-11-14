@@ -6,7 +6,6 @@ import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.observer.Observed;
 import pt.iscte.poo.observer.Observer;
 import utils.Direction;
-import gameObjects.Player;
 
 public class GameEngine implements Observer {
 	
