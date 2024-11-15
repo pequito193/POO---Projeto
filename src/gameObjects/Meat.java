@@ -2,17 +2,17 @@ package gameObjects;
 
 import utils.Point2D;
 
-public class Meat extends GameObject {
+public class Meat extends Collectible {
 	private static final String NAME = "GoodMeat";
 	private static final int LAYER = 0;
-	private static final GameObjectType OBJECT_TYPE = GameObjectType.COLLECTIBLE;
 	private static final int HEALTH_BUFF = 20;
 	
 	public Meat(Point2D startingPosition) {
-		super(NAME, startingPosition, LAYER, OBJECT_TYPE);
+		super(NAME, startingPosition, LAYER);
 	}
 	
-	public static void buffHealth(Character character) {
+	@Override
+	public void updateStats(Character character) {
 		character.updateHealth(HEALTH_BUFF);
 	}
 }
