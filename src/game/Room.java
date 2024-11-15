@@ -11,7 +11,6 @@ import gameObjects.Background;
 import gameObjects.DonkeyKong;
 import gameObjects.Door;
 import gameObjects.GameObject;
-import gameObjects.GameObject.GameObjectType;
 import gameObjects.Ladder;
 import gameObjects.Meat;
 import gameObjects.Player;
@@ -35,10 +34,12 @@ public class Room {
 	public static final int ROOM_SIZE = 10;
 	private GameObject[][] room;
 	private RoomNumber roomNumber;
+	private List<gameObjects.Character> characters;
 	private Player player;
 	
 	public Room(String filename) throws IOException {
 		this.room = new GameObject[ROOM_SIZE][ROOM_SIZE];
+		this.characters = new ArrayList<gameObjects.Character>();
 		readRoomFile(filename);
 		createObjects();
 	}
@@ -80,11 +81,11 @@ public class Room {
 					this.room[row][col] = new Princess(position);
 					break;
 				case 'G':
-					this.room[row][col] = new DonkeyKong(position);
+					this.characters.add(new DonkeyKong(position));
 					break;
 				case 'H':
 					this.player = new Player(position);
-					this.room[row][col] = this.player;
+					this.characters.add(this.player);
 					break;
 				case 's':
 					this.room[row][col] = new Sword(position);
@@ -96,14 +97,18 @@ public class Room {
 					this.room[row][col] = new Door(position);
 					break;
 				default:
-					this.room[row][col] = new Background(position);
+					// Os quadrantes vazios não guardam nenhum "Background(position)", vão estar só como "null"
 					break;
 			}
 		}
 	}
 	
-	public Player getPlayer() {
-		return this.player;
+	public void move(Direction direction, GameObject[][] room) {
+		Point2D newPosition = this.player.getPosition().plus(direction.asVector());
+	    if (newPosition.getX() >= MIN_POSITION  && newPosition.getX() <= MAX_POSITION &&
+	        newPosition.getY() >= MIN_POSITION && newPosition.getY() <= MAX_POSITION) {
+	    	this.player.move(newPosition, room);
+	    }
 	}
 	
 	private void createObjects() {
@@ -112,11 +117,14 @@ public class Room {
 		for (int i = 0; i < room.length; i++) {
 			for (int j = 0; j < room[i].length; j++) {
 				GameObject gameObject = this.room[i][j];
-				// Do not redraw background tiles
-				if (gameObject.getObjectType() != GameObjectType.STATIC) {
+				if (gameObject != null) {
 					ImageGUI.getInstance().addImage(gameObject);
 				}
 			}
+		}
+		
+		for (gameObjects.Character character : this.characters) {
+			ImageGUI.getInstance().addImage(character);
 		}
 	}
 	

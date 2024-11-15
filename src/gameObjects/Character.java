@@ -3,6 +3,7 @@ package gameObjects;
 import game.Room;
 import utils.Direction;
 import utils.Point2D;
+import utils.Utils;
 
 public class Character extends GameObject {
 	private int health;
@@ -23,15 +24,49 @@ public class Character extends GameObject {
 		return this.damage;
 	}
 	
-	public void move(Direction direction, GameObject[][] room) {
-		Point2D newPosition = super.getPosition().plus(direction.asVector());
-	    if (newPosition.getX() >= Room.MIN_POSITION  && newPosition.getX() <= Room.MAX_POSITION &&
-	        newPosition.getY() >= Room.MIN_POSITION && newPosition.getY() <= Room.MAX_POSITION) {
-	    	// TODO: melhorar esta logica
-	    	if (room[newPosition.getX()][newPosition.getY()].getObjectType() != GameObjectType.INTRESPASSABLE) {
-	    		super.setPosition(super.getPosition().plus(direction.asVector()));
-	    	}
-	    }
+	
+	public void move(Point2D newPosition, GameObject[][] room) {
+		GameObject object = room[newPosition.getX()][newPosition.getY()];
+		
+		if (object == null) {
+			if (Utils.isMovementHorizontal(getPosition(), newPosition)) {
+				super.setPosition(newPosition);
+			}
+			
+			// Para o caso em que estamos no topo da escada e o quadrante de cima está vazio
+			else if (Utils.isOnClimbableObject(room, getPosition())
+					&& Utils.isMovementUpwards(getPosition(), newPosition)) {
+				super.setPosition(newPosition);
+			}
+			
+			return;
+		}
+		
+		switch (object.getObjectType()) {
+			case COLLECTIBLE:
+				// TODO:
+				break;
+			case TRAP:
+				// TODO:
+				break;
+			case CLIMBABLE:
+				super.setPosition(newPosition);
+				break;
+			case ENEMY:
+				// TODO:
+				break;
+			case DOOR:
+				// TODO:
+				break;
+			case PRINCESS:
+				// TODO:
+				break;
+			case PROJECTILE:
+				// TODO:
+				break;
+			default:
+				break;	
+		}
 	}
 	
 	public void updateHealth(int value) {
