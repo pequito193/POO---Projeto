@@ -14,7 +14,7 @@ public class GameEngine implements Observer {
 	
 	public GameEngine() throws IOException {
 		ImageGUI.getInstance().update();
-		currentRoom= new Room("././rooms/room0.txt");
+		currentRoom= new Room("././rooms/room2.txt");
 	}
 
 	@Override

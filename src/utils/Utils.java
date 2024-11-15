@@ -21,6 +21,10 @@ public class Utils {
 	}
 	
 	public static boolean isOnClimbableObject(GameObject[][] room, Point2D position) {
-		return room[position.getX()][position.getY()].getObjectType() == GameObjectType.CLIMBABLE;
+		GameObject object = room[position.getX()][position.getY()];
+		
+		if (object == null) return false;
+		
+		return object.getObjectType() == GameObjectType.CLIMBABLE;
 	}
 }
