@@ -1,20 +1,58 @@
 package game;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import gameObjects.GameObject;
 import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.observer.Observed;
 import pt.iscte.poo.observer.Observer;
 import utils.Direction;
 
 public class GameEngine implements Observer {
+	private static GameEngine INSTANCE;
 	
+	private List<Room> roomList;
 	private Room currentRoom;
 	private int lastTickProcessed = 0;
 	
-	public GameEngine() throws IOException {
+	private GameEngine() {
 		ImageGUI.getInstance().update();
-		currentRoom= new Room("././rooms/room2.txt");
+		this.roomList = new ArrayList<Room>();
+		
+		Room room0 = new Room(new File("././rooms/room0.txt"), 0);
+		Room room1 = new Room(new File("././rooms/room1.txt"), 1);
+		Room room2 = new Room(new File("././rooms/room2.txt"), 2);
+		
+		this.roomList.add(room0);
+		this.roomList.add(room1);
+		this.roomList.add(room2);
+		
+		this.currentRoom = this.roomList.get(0);
+		
+		this.currentRoom.drawRoom();
+	}
+	
+	public void setNewRoom(int roomNumber) {
+		for (Room room : roomList) {
+			if (room.getRoomNumber() == roomNumber) {
+				ImageGUI.getInstance().clearImages();
+				this.currentRoom = room;
+				this.currentRoom.drawRoom();
+			}
+		}
+	}
+	
+	public static GameEngine getInstance() {
+        if (INSTANCE == null)
+            INSTANCE = new GameEngine();
+        return INSTANCE;
+    }
+	
+	public void deleteGameObject(GameObject object) {
+		currentRoom.removeGameObject(object);
 	}
 
 	@Override
@@ -25,7 +63,7 @@ public class GameEngine implements Observer {
 			//System.out.println("Keypressed " + k);
 			if (Direction.isDirection(k)) {
 				//System.out.println("Direction! ");
-				currentRoom.move(Direction.directionFor(k), currentRoom.getRoomLayout());
+				currentRoom.move(Direction.directionFor(k));
 			}
 		}
 		int t = ImageGUI.getInstance().getTicks();

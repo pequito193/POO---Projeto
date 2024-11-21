@@ -2,22 +2,23 @@ package gameObjects;
 
 import utils.Point2D;
 
-public class Wall extends GameObject {
-	private static final String NAME = "Wall";
-	private static final int LAYER = 1;
+public abstract class Goal extends GameObject {
+	private static final int LAYER = 0;
 	
-	public Wall(Point2D startingPosition) {
-		super(NAME, startingPosition, LAYER);
+	public Goal(String name, Point2D startingPosition) {
+		super(name, startingPosition, LAYER);
 	}
+	
+	public abstract void finishRoom(int roomNumber);
 	
 	@Override
 	public boolean isWalkable() {
-		return true;
+		return false;
 	}
 	
 	@Override
 	public boolean isCrossable() {
-		return false;
+		return true;
 	}
 	
 	@Override
@@ -42,6 +43,6 @@ public class Wall extends GameObject {
 	
 	@Override
 	public boolean isObjective() {
-		return false;
+		return true;
 	}
 }

@@ -13,14 +13,13 @@ public class DonkeyKong extends Character {
 	
 	private static final String NAME = "DonkeyKong";
 	private static final int LAYER = 0;
-	private static final GameObjectType OBJECT_TYPE = GameObjectType.ENEMY;
 	private static final int BASE_HEALTH = 100;
 	private static final int BASE_DAMAGE = 20;
 	private static final int BASE_BANANA_DAMAGE = 10;
 	private int bananaDamage;
 	
 	public DonkeyKong(Point2D startingPosition){
-		super(NAME, startingPosition, LAYER, OBJECT_TYPE, BASE_HEALTH, BASE_DAMAGE);
+		super(NAME, startingPosition, LAYER, BASE_HEALTH, BASE_DAMAGE);
 		this.bananaDamage = BASE_BANANA_DAMAGE;
 	}
 	
@@ -73,6 +72,7 @@ public class DonkeyKong extends Character {
 	
 	private void throwBanana() {
 		Banana banana = new Banana(super.getPosition(), this.bananaDamage);
+		// TODO: banana.fall() should be called once per tick
 		banana.fall();
 	}
 }

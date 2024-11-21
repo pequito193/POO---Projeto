@@ -1,20 +1,21 @@
 package gameObjects;
 
+import pt.iscte.poo.gui.ImageGUI;
 import utils.Point2D;
+import utils.Utils;
 
-public class Trap extends GameObject {
-	private static final String NAME = "Trap";
-	private static final int LAYER = 0;
-	private static final int DAMAGE = 10;
-
-	public Trap(Point2D startingPosition) {
-		super(NAME, startingPosition, LAYER);
+public abstract class Collectable extends GameObject {
+	public Collectable(String name, Point2D startingPosition, int layer) {
+		super(name, startingPosition, layer);
 	}
 	
-	public void activateTrap(Character character) {
-		character.updateHealth(DAMAGE);
-		character.fall();
+	public void updateStats(Character character) {
+		updateStatsImplementation(character);
+		
+		Utils.deleteGameObject(this);
 	}
+	
+	protected abstract void updateStatsImplementation(Character character);
 	
 	@Override
 	public boolean isWalkable() {
@@ -38,12 +39,12 @@ public class Trap extends GameObject {
 	
 	@Override
 	public boolean isCollectable() {
-		return false;
+		return true;
 	}
 	
 	@Override
 	public boolean isTrap() {
-		return true;
+		return false;
 	}
 	
 	@Override
@@ -51,5 +52,3 @@ public class Trap extends GameObject {
 		return false;
 	}
 }
-
-

@@ -2,7 +2,7 @@ package gameObjects;
 
 import utils.Point2D;
 
-public class Meat extends Collectible {
+public class Meat extends Collectable {
 	private static final String NAME = "GoodMeat";
 	private static final int LAYER = 0;
 	private static final int HEALTH_BUFF = 20;
@@ -12,7 +12,7 @@ public class Meat extends Collectible {
 	}
 	
 	@Override
-	public void updateStats(Character character) {
+	public void updateStatsImplementation(Character character) {
 		character.updateHealth(HEALTH_BUFF);
 	}
 }
