@@ -1,15 +1,16 @@
 package gameObjects;
 
+import game.Room;
+import pt.iscte.poo.gui.ImageGUI;
 import utils.Point2D;
 
 public class Banana extends GameObject {
 	private static final String NAME = "Hammer";  // TODO: add "Banana.png" image
 	private static final int LAYER = 0;
-	private static final GameObjectType OBJECT_TYPE = GameObjectType.PROJECTILE;
 	private int damage;
 	
 	public Banana(Point2D startingPosition, int damage) {
-		super(NAME, startingPosition, LAYER, OBJECT_TYPE);
+		super(NAME, startingPosition, LAYER);
 		this.damage = damage;
 	}
 	
@@ -17,16 +18,53 @@ public class Banana extends GameObject {
 		return this.damage;
 	}
 	
-	/*** Banana will fall 1 tile ***/
-	public void fall() {/*
-		if (getY() > Room.MIN_POSITION) {
-			this.posY--;
+	// Banana falls 1 tile
+	public void fall() {
+		if (getPosition().getY() > Room.MIN_POSITION) {
+			int posX = getPosition().getX();
+			int posY = getPosition().getY() - 1;
+			setPosition(new Point2D(posX, posY));
 		} else {
 			removeBanana();
-		}*/
+		}
 	}
 	
-	private void removeBanana() {
-		// TODO: a banana tem de deixar de existir
+	public void removeBanana() {
+		ImageGUI.getInstance().removeImage(this);
+	}
+	
+	@Override
+	public boolean isWalkable() {
+		return false;
+	}
+	
+	@Override
+	public boolean isCrossable() {
+		return true;
+	}
+	
+	@Override
+	public boolean isClimbable() {
+		return false;
+	}
+	
+	@Override
+	public boolean isAttackable() {
+		return false;
+	}
+	
+	@Override
+	public boolean isCollectable() {
+		return false;
+	}
+	
+	@Override
+	public boolean isTrap() {
+		return false;
+	}
+	
+	@Override
+	public boolean isObjective() {
+		return false;
 	}
 }

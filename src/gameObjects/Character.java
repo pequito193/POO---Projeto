@@ -1,6 +1,9 @@
 package gameObjects;
 
+import java.util.List;
+
 import game.Room;
+import pt.iscte.poo.gui.ImageGUI;
 import utils.Direction;
 import utils.Point2D;
 import utils.Utils;
@@ -9,8 +12,8 @@ public class Character extends GameObject {
 	private int health;
 	private int damage;
 	
-	public Character(String name, Point2D startingPosition, int layer, GameObjectType objectType, int health, int damage) {
-		super(name, startingPosition, layer, objectType);
+	public Character(String name, Point2D startingPosition, int layer, int health, int damage) {
+		super(name, startingPosition, layer);
 		
 		this.health = health;
 		this.damage = damage;
@@ -25,57 +28,129 @@ public class Character extends GameObject {
 	}
 	
 	
-	public void move(Point2D newPosition, GameObject[][] room) {
-		GameObject object = room[newPosition.getX()][newPosition.getY()];
-		
-		if (object == null) {
-			if (Utils.isMovementHorizontal(getPosition(), newPosition)) {
+	public void move(Point2D newPosition, List<GameObject> room, int roomNumber) {
+		for (GameObject o : room) {
+			// Skip object if it is not located in the new position
+			if (!Utils.arePositionsEqual(o.getPosition(), newPosition) || o == this) continue;
+			
+			// Check climbable
+			if (o.isClimbable()) {
 				super.setPosition(newPosition);
 			}
 			
-			// Para o caso em que estamos no topo da escada e o quadrante de cima está vazio
-			else if (Utils.isOnClimbableObject(room, getPosition())
-					&& Utils.isMovementUpwards(getPosition(), newPosition)) {
-				super.setPosition(newPosition);
+			// Check attackable
+			if (o.isAttackable()) {
+				Character character = (Character) o;
+				character.updateHealth(- this.damage);
 			}
 			
-			return;
+			// Check objective
+			if (o.isObjective()) {
+				if (o.getClass() == Door.class) {
+					Door door = (Door) o;
+					door.finishRoom(roomNumber);
+				}
+				
+				else if (o.getClass() == Princess.class) {
+					Princess princess = (Princess) o;
+					princess.finishRoom(roomNumber);
+				}
+			}
+			
+			// Check trap
+			if (o.isTrap()) {
+				// TODO: fix (temos de verificar se o tile de baixo é uma trap, não o tile onde estamos)
+				Trap trap = (Trap) o;
+				trap.activateTrap(this);
+			}
+			
+			// Check collectable
+			if (o.isCollectable()) {
+				if (o.getClass() == Meat.class) {
+					Meat meat = (Meat) o;
+					meat.updateStats(this);
+				}
+				
+				else if (o.getClass() == Sword.class) {
+					Sword sword = (Sword) o;
+					sword.updateStats(this);
+				}
+				
+				return;
+			}
+			
+			// Check crossable
+			if (!o.isCrossable()) {
+				return;
+			}
 		}
 		
-		switch (object.getObjectType()) {
-			case COLLECTIBLE:
-				// TODO:
-				break;
-			case TRAP:
-				// TODO:
-				break;
-			case CLIMBABLE:
-				super.setPosition(newPosition);
-				break;
-			case ENEMY:
-				// TODO:
-				break;
-			case DOOR:
-				// TODO:
-				break;
-			case PRINCESS:
-				// TODO:
-				break;
-			case PROJECTILE:
-				// TODO:
-				break;
-			default:
-				break;	
+		// No object found -> we are moving into an empty tile, therefore we can move
+		moveIntoCrossableTile(newPosition, room);
+	}
+	
+	private void moveIntoCrossableTile(Point2D newPos, List<GameObject> room) {
+		if (Utils.isMovementHorizontal(getPosition(), newPos)) {
+			super.setPosition(newPos);
 		}
+		
+		else if (Utils.isOnClimbableObject(newPos, room)
+				&& Utils.isMovementUpwards(getPosition(), newPos)) {
+			super.setPosition(newPos);
+		}
+	}
+	
+	public void fall() {
+		// TODO
 	}
 	
 	public void updateHealth(int value) {
 		int newValue = this.health + value;
-		this.health = newValue >= 0 ? newValue : 0; 
+		
+		this.health = newValue <= 0 ? 0 : newValue;
+		
+		if (this.health <= 0) {
+			Utils.deleteGameObject(this);
+		}
 	}
 	
 	public void updateDamage(int value) {
 		int newValue = this.damage + value;
 		this.damage = newValue >= 0 ? newValue : 0; 
+	}
+	
+	@Override
+	public boolean isWalkable() {
+		return false;
+	}
+	
+	@Override
+	public boolean isCrossable() {
+		return false;
+	}
+	
+	@Override
+	public boolean isClimbable() {
+		return false;
+	}
+	
+	@Override
+	public boolean isAttackable() {
+		return true;
+	}
+	
+	@Override
+	public boolean isCollectable() {
+		return false;
+	}
+	
+	@Override
+	public boolean isTrap() {
+		return false;
+	}
+	
+	@Override
+	public boolean isObjective() {
+		return false;
 	}
 }

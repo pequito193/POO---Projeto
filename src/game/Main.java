@@ -8,7 +8,7 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		ImageGUI gui = ImageGUI.getInstance();
-		GameEngine engine = new GameEngine();
+		GameEngine engine = GameEngine.getInstance();
 		gui.setStatusMessage("Good luck!");
 		gui.registerObserver(engine);
 		gui.go();

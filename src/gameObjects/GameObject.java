@@ -3,33 +3,15 @@ package gameObjects;
 import pt.iscte.poo.gui.ImageTile;
 import utils.Point2D;
 
-public class GameObject implements ImageTile {
-	public static enum GameObjectType {
-		/*** Map elements ***/
-		INTRESPASSABLE,   // solid blocks
-		CLIMBABLE,        // ladders
-		COLLECTIBLE,      // powerups
-		STATIC,           // no gameplay effect
-		TRAP,
-		PROJECTILE,
-		DOOR,
-		
-		/*** NPCs ***/
-		PLAYER,
-		ENEMY,
-		PRINCESS,
-	}
-	
+public abstract class GameObject implements ImageTile {
 	private final String name;
 	private Point2D position;
 	private final int layer;
-	private final GameObjectType objectType;
 	
-	public GameObject(String name, Point2D startingPosition, int layer, GameObjectType type) {
+	public GameObject(String name, Point2D startingPosition, int layer) {
 		this.name = name;
 		this.position = startingPosition;
 		this.layer = layer;
-		this.objectType = type;
 	}
 	
 	public String getName() {
@@ -44,11 +26,17 @@ public class GameObject implements ImageTile {
 		return this.layer;
 	}
 	
-	public GameObjectType getObjectType() {
-		return this.objectType;
-	}
 	
 	public void setPosition(Point2D newPosition) {
 		this.position = newPosition;
 	}
+	
+	// GameObject interactions
+	public abstract boolean isWalkable();
+	public abstract boolean isCrossable();
+	public abstract boolean isClimbable();
+	public abstract boolean isAttackable();
+	public abstract boolean isCollectable();
+	public abstract boolean isTrap();
+	public abstract boolean isObjective();
 }
