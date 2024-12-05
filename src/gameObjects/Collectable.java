@@ -5,8 +5,10 @@ import utils.Point2D;
 import utils.Utils;
 
 public abstract class Collectable extends GameObject {
-	public Collectable(String name, Point2D startingPosition, int layer) {
-		super(name, startingPosition, layer);
+	private static final int LAYER = 2;
+	
+	public Collectable(String name, Point2D startingPosition) {
+		super(name, startingPosition, LAYER);
 	}
 	
 	public void updateStats(Character character) {
@@ -50,5 +52,9 @@ public abstract class Collectable extends GameObject {
 	@Override
 	public boolean isObjective() {
 		return false;
+	}
+	@Override
+	public boolean isFallable() {
+		return true;
 	}
 }

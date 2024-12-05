@@ -44,4 +44,9 @@ public class Background extends GameObject {
 	public boolean isObjective() {
 		return false;
 	}
+	
+	@Override
+	public boolean isFallable() {
+		return true;
+	}
 }

@@ -39,4 +39,5 @@ public abstract class GameObject implements ImageTile {
 	public abstract boolean isCollectable();
 	public abstract boolean isTrap();
 	public abstract boolean isObjective();
+	public abstract boolean isFallable();
 }

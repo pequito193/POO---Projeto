@@ -108,7 +108,8 @@ public class Room {
 		Point2D newPosition = this.player.getPosition().plus(direction.asVector());
 	    if (newPosition.getX() >= MIN_POSITION  && newPosition.getX() <= MAX_POSITION &&
 	        newPosition.getY() >= MIN_POSITION && newPosition.getY() <= MAX_POSITION) {
-	    	this.player.move(newPosition, this.room, this.roomNumber);
+
+            this.player.move(newPosition, this.room, this.roomNumber);
 	    }
 	}
 	
@@ -124,6 +125,27 @@ public class Room {
 		for (int i = 0; i < Room.ROOM_SIZE; i++) {
 			for (int j = 0; j < Room.ROOM_SIZE; j++) {
 				ImageGUI.getInstance().addImage(new Background(new Point2D(i, j)));
+			}
+		}
+	}
+	
+	public void checkFall() {
+		Point2D belowPosition = new Point2D(this.player.getPosition().getX(), this.player.getPosition().getY() + 1);
+        
+        for (GameObject obj : room) {
+            if (obj.getPosition() == belowPosition) {
+            	
+            }
+        }
+        
+
+	}
+	
+	public void moveDK() {
+		for (GameObject obj : this.room) {
+			if (obj.getClass() == DonkeyKong.class) {
+				DonkeyKong dk = (DonkeyKong) obj;
+				dk.doSomething(this.room ,this.roomNumber);
 			}
 		}
 	}

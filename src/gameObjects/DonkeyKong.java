@@ -1,5 +1,7 @@
 package gameObjects;
 
+import java.util.List;
+
 import utils.Point2D;
 import utils.Vector2D;
 
@@ -12,14 +14,14 @@ public class DonkeyKong extends Character {
 	};
 	
 	private static final String NAME = "DonkeyKong";
-	private static final int LAYER = 0;
 	private static final int BASE_HEALTH = 100;
 	private static final int BASE_DAMAGE = 20;
 	private static final int BASE_BANANA_DAMAGE = 10;
 	private int bananaDamage;
+	private static final boolean CAN_WIN = false;
 	
 	public DonkeyKong(Point2D startingPosition){
-		super(NAME, startingPosition, LAYER, BASE_HEALTH, BASE_DAMAGE);
+		super(NAME, startingPosition, BASE_HEALTH, BASE_DAMAGE, CAN_WIN);
 		this.bananaDamage = BASE_BANANA_DAMAGE;
 	}
 	
@@ -27,18 +29,17 @@ public class DonkeyKong extends Character {
 		this.bananaDamage += bonus;
 	}
 	
-	// TODO
-	/*
-	public void doSomething() {
+	
+	public void doSomething(List<GameObject> room, int roomNumber) {
 		Actions action = randomAction();
 		
 		switch (action) {
 			case LEFT:
-				super.move(new Vector2D(-1, 0));
+				super.move(new Point2D(super.getPosition().getX() - 1, super.getPosition().getY()), room, roomNumber);
 				break;
 			
 			case RIGHT:
-				super.move(new Vector2D(1, 0));
+				super.move(new Point2D(super.getPosition().getX() + 1, super.getPosition().getY()), room, roomNumber);
 				break;
 				
 			case THROW:
@@ -50,7 +51,6 @@ public class DonkeyKong extends Character {
 				break;
 		}
 	}
-	*/
 	
 	private Actions randomAction() {
 		int randomValue = (int) (Math.random() * 4);
