@@ -11,10 +11,12 @@ import utils.Utils;
 public class Character extends GameObject {
 	private int health;
 	private int damage;
+	private static final int LAYER = 2;
+	private boolean canWin;
 	
-	public Character(String name, Point2D startingPosition, int layer, int health, int damage) {
-		super(name, startingPosition, layer);
-		
+	public Character(String name, Point2D startingPosition, int health, int damage, boolean canWin) {
+		super(name, startingPosition, LAYER);
+		this.canWin = canWin;
 		this.health = health;
 		this.damage = damage;
 	}
@@ -28,7 +30,9 @@ public class Character extends GameObject {
 	}
 	
 	
-	public void move(Point2D newPosition, List<GameObject> room, int roomNumber) {
+	public void move(Point2D newPosition, List<GameObject> room, int roomNum) {
+		if (Utils.isOutsideBounds(newPosition)) return;
+		
 		for (GameObject o : room) {
 			// Skip object if it is not located in the new position
 			if (!Utils.arePositionsEqual(o.getPosition(), newPosition) || o == this) continue;
@@ -45,15 +49,15 @@ public class Character extends GameObject {
 			}
 			
 			// Check objective
-			if (o.isObjective()) {
+			if (o.isObjective() && canWin) {
 				if (o.getClass() == Door.class) {
 					Door door = (Door) o;
-					door.finishRoom(roomNumber);
+					door.finishRoom(roomNum);
 				}
 				
 				else if (o.getClass() == Princess.class) {
 					Princess princess = (Princess) o;
-					princess.finishRoom(roomNumber);
+					princess.finishRoom(roomNum);
 				}
 			}
 			
@@ -89,6 +93,7 @@ public class Character extends GameObject {
 		moveIntoCrossableTile(newPosition, room);
 	}
 	
+		
 	private void moveIntoCrossableTile(Point2D newPos, List<GameObject> room) {
 		if (Utils.isMovementHorizontal(getPosition(), newPos)) {
 			super.setPosition(newPos);
@@ -101,7 +106,8 @@ public class Character extends GameObject {
 	}
 	
 	public void fall() {
-		// TODO
+		System.out.println("falling");
+		super.setPosition(new Point2D(getPosition().getX(), getPosition().getY() + 1));
 	}
 	
 	public void updateHealth(int value) {
@@ -151,6 +157,11 @@ public class Character extends GameObject {
 	
 	@Override
 	public boolean isObjective() {
+		return false;
+	}
+	
+	@Override
+	public boolean isFallable() {
 		return false;
 	}
 }

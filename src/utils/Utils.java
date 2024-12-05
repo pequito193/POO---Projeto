@@ -3,6 +3,7 @@ package utils;
 import java.util.List;
 
 import game.GameEngine;
+import game.Room;
 import gameObjects.GameObject;
 import pt.iscte.poo.gui.ImageGUI;
 
@@ -41,6 +42,17 @@ public class Utils {
 			if (curX == objX && curY == objY - 1) {
 				return o.isClimbable();
 			}
+		}
+		
+		return false;
+	}
+	
+	public static boolean isOutsideBounds(Point2D p) {
+		if (p.getX() > Room.MAX_POSITION
+			|| p.getX() < Room.MIN_POSITION
+			|| p.getY() > Room.MAX_POSITION
+			|| p.getY() < Room.MIN_POSITION) {
+			return true;
 		}
 		
 		return false;

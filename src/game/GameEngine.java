@@ -75,6 +75,8 @@ public class GameEngine implements Observer {
 
 	private void processTick() {
 		//System.out.println("Tic Tac : " + lastTickProcessed);
+		currentRoom.checkFall();
+		currentRoom.moveDK();
 		lastTickProcessed++;
 	}
 

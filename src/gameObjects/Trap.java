@@ -13,7 +13,6 @@ public class Trap extends GameObject {
 	
 	public void activateTrap(Character character) {
 		character.updateHealth(DAMAGE);
-		character.fall();
 	}
 	
 	@Override
@@ -49,6 +48,11 @@ public class Trap extends GameObject {
 	@Override
 	public boolean isObjective() {
 		return false;
+	}
+	
+	@Override
+	public boolean isFallable() {
+		return true;
 	}
 }
 

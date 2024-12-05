@@ -45,4 +45,9 @@ public abstract class Goal extends GameObject {
 	public boolean isObjective() {
 		return true;
 	}
+	
+	@Override
+	public boolean isFallable() {
+		return false;
+	}
 }

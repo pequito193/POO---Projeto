@@ -44,4 +44,9 @@ public class Ladder extends GameObject {
 	public boolean isObjective() {
 		return false;
 	}
+
+	@Override
+	public boolean isFallable() {
+		return false;
+	}
 }
