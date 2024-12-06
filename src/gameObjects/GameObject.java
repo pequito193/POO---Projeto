@@ -1,5 +1,7 @@
 package gameObjects;
 
+import game.GameEngine;
+import pt.iscte.poo.gui.ImageGUI;
 import pt.iscte.poo.gui.ImageTile;
 import utils.Point2D;
 
@@ -31,13 +33,41 @@ public abstract class GameObject implements ImageTile {
 		this.position = newPosition;
 	}
 	
+	public void deleteObject() {
+		ImageGUI.getInstance().removeImage(this);
+		GameEngine.getInstance().getCurrentRoom().removeGameObject(this);
+	}
+	
 	// GameObject interactions
-	public abstract boolean isWalkable();
-	public abstract boolean isCrossable();
-	public abstract boolean isClimbable();
-	public abstract boolean isAttackable();
-	public abstract boolean isCollectable();
-	public abstract boolean isTrap();
-	public abstract boolean isObjective();
-	public abstract boolean isFallable();
+	public boolean isWalkable() {
+		return false;
+	}
+	
+	public boolean isCrossable() {
+		return false;
+	}
+	
+	public boolean isClimbable() {
+		return false;
+	}
+	
+	public boolean isAttackable() {
+		return false;
+	}
+	
+	public boolean isCollectable() {
+		return false;
+	}
+	
+	public boolean isTrap() {
+		return false;
+	}
+	
+	public boolean isObjective() {
+		return false;
+	}
+	
+	public boolean isFallable() {
+		return false;
+	}
 }

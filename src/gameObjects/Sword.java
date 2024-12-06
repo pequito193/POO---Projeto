@@ -14,9 +14,4 @@ public class Sword extends Collectable {
 	public void updateStatsImplementation(Character character) {
 		character.updateDamage(DAMAGE_BUFF);
 	}
-
-	@Override
-	public boolean isFallable() {
-		return true;
-	}
 }

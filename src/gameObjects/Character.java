@@ -2,6 +2,7 @@ package gameObjects;
 
 import java.util.List;
 
+import game.GameEngine;
 import game.Room;
 import pt.iscte.poo.gui.ImageGUI;
 import utils.Direction;
@@ -29,13 +30,17 @@ public class Character extends GameObject {
 		return this.damage;
 	}
 	
-	
-	public void move(Point2D newPosition, List<GameObject> room, int roomNum) {
+	public void move(Point2D newPosition) {
 		if (Utils.isOutsideBounds(newPosition)) return;
+		
+		Room currentRoom = GameEngine.getInstance().getCurrentRoom();
+		
+		List<GameObject> room = currentRoom.getRoom();
+		int roomNumber = currentRoom.getRoomNumber();
 		
 		for (GameObject o : room) {
 			// Skip object if it is not located in the new position
-			if (!Utils.arePositionsEqual(o.getPosition(), newPosition) || o == this) continue;
+			if (!o.getPosition().equals(newPosition) || o == this) continue;
 			
 			// Check climbable
 			if (o.isClimbable()) {
@@ -52,20 +57,15 @@ public class Character extends GameObject {
 			if (o.isObjective() && canWin) {
 				if (o.getClass() == Door.class) {
 					Door door = (Door) o;
-					door.finishRoom(roomNum);
+					door.finishRoom(roomNumber);
 				}
 				
 				else if (o.getClass() == Princess.class) {
 					Princess princess = (Princess) o;
-					princess.finishRoom(roomNum);
+					princess.finishRoom(roomNumber);
 				}
-			}
-			
-			// Check trap
-			if (o.isTrap()) {
-				// TODO: fix (temos de verificar se o tile de baixo é uma trap, não o tile onde estamos)
-				Trap trap = (Trap) o;
-				trap.activateTrap(this);
+				
+				return;
 			}
 			
 			// Check collectable
@@ -90,11 +90,12 @@ public class Character extends GameObject {
 		}
 		
 		// No object found -> we are moving into an empty tile, therefore we can move
-		moveIntoCrossableTile(newPosition, room);
+		moveIntoCrossableTile(newPosition);
 	}
-	
 		
-	private void moveIntoCrossableTile(Point2D newPos, List<GameObject> room) {
+	private void moveIntoCrossableTile(Point2D newPos) {
+		List<GameObject> room = GameEngine.getInstance().getCurrentRoom().getRoom();
+		
 		if (Utils.isMovementHorizontal(getPosition(), newPos)) {
 			super.setPosition(newPos);
 		}
@@ -106,8 +107,8 @@ public class Character extends GameObject {
 	}
 	
 	public void fall() {
-		System.out.println("falling");
-		super.setPosition(new Point2D(getPosition().getX(), getPosition().getY() + 1));
+		Point2D newPosition = new Point2D(getPosition().getX(), getPosition().getY() + 1);
+		setPosition(newPosition);
 	}
 	
 	public void updateHealth(int value) {
@@ -116,7 +117,7 @@ public class Character extends GameObject {
 		this.health = newValue <= 0 ? 0 : newValue;
 		
 		if (this.health <= 0) {
-			Utils.deleteGameObject(this);
+			deleteObject();
 		}
 	}
 	
@@ -127,41 +128,11 @@ public class Character extends GameObject {
 	
 	@Override
 	public boolean isWalkable() {
-		return false;
+		return true;
 	}
-	
-	@Override
-	public boolean isCrossable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isClimbable() {
-		return false;
-	}
-	
+
 	@Override
 	public boolean isAttackable() {
 		return true;
-	}
-	
-	@Override
-	public boolean isCollectable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isTrap() {
-		return false;
-	}
-	
-	@Override
-	public boolean isObjective() {
-		return false;
-	}
-	
-	@Override
-	public boolean isFallable() {
-		return false;
 	}
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import gameObjects.Background;
+import gameObjects.Banana;
 import gameObjects.DonkeyKong;
 import gameObjects.Door;
 import gameObjects.GameObject;
@@ -39,10 +40,6 @@ public class Room {
 	
 	public int getRoomNumber() {
 		return this.roomNumber;
-	}
-
-	public void removeGameObject(GameObject object) {
-		this.room.remove(object);
 	}
 	
 	private void readRoomFile(File file) {
@@ -104,12 +101,16 @@ public class Room {
 		}
 	}
 	
+	public List<GameObject> getRoom() {
+		return this.room;
+	}
+	
 	public void move(Direction direction) {
 		Point2D newPosition = this.player.getPosition().plus(direction.asVector());
 	    if (newPosition.getX() >= MIN_POSITION  && newPosition.getX() <= MAX_POSITION &&
 	        newPosition.getY() >= MIN_POSITION && newPosition.getY() <= MAX_POSITION) {
 
-            this.player.move(newPosition, this.room, this.roomNumber);
+            this.player.move(newPosition);
 	    }
 	}
 	
@@ -121,6 +122,14 @@ public class Room {
 		}
 	}
 	
+	public void addGameObject(GameObject obj) {
+		this.room.add(obj);
+	}
+	
+	public void removeGameObject(GameObject obj) {
+		this.room.remove(obj);
+	}
+	
 	private void fillBackground() {
 		for (int i = 0; i < Room.ROOM_SIZE; i++) {
 			for (int j = 0; j < Room.ROOM_SIZE; j++) {
@@ -129,23 +138,39 @@ public class Room {
 		}
 	}
 	
-	public void checkFall() {
-		Point2D belowPosition = new Point2D(this.player.getPosition().getX(), this.player.getPosition().getY() + 1);
-        
-        for (GameObject obj : room) {
-            if (obj.getPosition() == belowPosition) {
-            	
-            }
-        }
-        
-
+	public void updateObjects() {
+		checkFall();
+		moveDK();
 	}
 	
-	public void moveDK() {
+	private void checkFall() {
+		Point2D belowPosition = new Point2D(this.player.getPosition().getX(), this.player.getPosition().getY() + 1);
+		
+        for (GameObject obj : room) {
+            if (obj.getPosition().equals(belowPosition)) {
+            	if (obj.isFallable()) {
+            		this.player.fall();
+            		
+            		if (obj.isTrap()) {
+            			Trap trap = (Trap) obj;
+            			trap.activateTrap(this.player);
+            		}
+            		
+            	}
+            	
+        		return;
+        	}
+        }
+        
+        this.player.fall();
+	}
+	
+	private void moveDK() {
 		for (GameObject obj : this.room) {
 			if (obj.getClass() == DonkeyKong.class) {
 				DonkeyKong dk = (DonkeyKong) obj;
-				dk.doSomething(this.room ,this.roomNumber);
+				dk.doSomething();
+				dk.updateBananas();
 			}
 		}
 	}

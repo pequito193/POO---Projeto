@@ -14,15 +14,10 @@ public abstract class Collectable extends GameObject {
 	public void updateStats(Character character) {
 		updateStatsImplementation(character);
 		
-		Utils.deleteGameObject(this);
+		deleteObject();
 	}
 	
 	protected abstract void updateStatsImplementation(Character character);
-	
-	@Override
-	public boolean isWalkable() {
-		return false;
-	}
 	
 	@Override
 	public boolean isCrossable() {
@@ -30,29 +25,10 @@ public abstract class Collectable extends GameObject {
 	}
 	
 	@Override
-	public boolean isClimbable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isAttackable() {
-		return false;
-	}
-	
-	@Override
 	public boolean isCollectable() {
 		return true;
 	}
 	
-	@Override
-	public boolean isTrap() {
-		return false;
-	}
-	
-	@Override
-	public boolean isObjective() {
-		return false;
-	}
 	@Override
 	public boolean isFallable() {
 		return true;
