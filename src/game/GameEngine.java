@@ -22,6 +22,12 @@ public class GameEngine implements Observer {
 		ImageGUI.getInstance().update();
 		this.roomList = new ArrayList<Room>();
 		
+		resetGame();
+	}
+	
+	public void resetGame() {
+		this.roomList.clear();
+		
 		Room room0 = new Room(new File("././rooms/room0.txt"), 0);
 		Room room1 = new Room(new File("././rooms/room1.txt"), 1);
 		Room room2 = new Room(new File("././rooms/room2.txt"), 2);
@@ -31,7 +37,6 @@ public class GameEngine implements Observer {
 		this.roomList.add(room2);
 		
 		this.currentRoom = this.roomList.get(0);
-		
 		this.currentRoom.drawRoom();
 	}
 	
@@ -51,8 +56,8 @@ public class GameEngine implements Observer {
         return INSTANCE;
     }
 	
-	public void deleteGameObject(GameObject object) {
-		currentRoom.removeGameObject(object);
+	public Room getCurrentRoom() {
+		return this.currentRoom;
 	}
 
 	@Override
@@ -75,8 +80,7 @@ public class GameEngine implements Observer {
 
 	private void processTick() {
 		//System.out.println("Tic Tac : " + lastTickProcessed);
-		currentRoom.checkFall();
-		currentRoom.moveDK();
+		currentRoom.updateObjects();
 		lastTickProcessed++;
 	}
 

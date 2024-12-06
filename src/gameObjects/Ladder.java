@@ -24,29 +24,4 @@ public class Ladder extends GameObject {
 	public boolean isClimbable() {
 		return true;
 	}
-	
-	@Override
-	public boolean isAttackable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isCollectable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isTrap() {
-		return false;
-	}
-	
-	@Override
-	public boolean isObjective() {
-		return false;
-	}
-
-	@Override
-	public boolean isFallable() {
-		return false;
-	}
 }

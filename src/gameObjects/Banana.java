@@ -1,12 +1,15 @@
 package gameObjects;
 
+import java.util.List;
+
+import game.GameEngine;
 import game.Room;
 import pt.iscte.poo.gui.ImageGUI;
 import utils.Point2D;
 
 public class Banana extends GameObject {
-	private static final String NAME = "Hammer";  // TODO: add "Banana.png" image
-	private static final int LAYER = 0;
+	private static final String NAME = "King";
+	private static final int LAYER = 2;
 	private int damage;
 	
 	public Banana(Point2D startingPosition, int damage) {
@@ -18,54 +21,37 @@ public class Banana extends GameObject {
 		return this.damage;
 	}
 	
-	// Banana falls 1 tile
-	public void fall() {
-		if (getPosition().getY() > Room.MIN_POSITION) {
-			int posX = getPosition().getX();
-			int posY = getPosition().getY() - 1;
-			setPosition(new Point2D(posX, posY));
-		} else {
-			removeBanana();
-		}
+	public void drawBanana() {
+		ImageGUI.getInstance().addImage(this);
 	}
 	
-	public void removeBanana() {
+	public void deleteBanana() {
 		ImageGUI.getInstance().removeImage(this);
 	}
 	
-	@Override
-	public boolean isWalkable() {
-		return false;
+	public void fall() {
+		if (getPosition().getY() < Room.MAX_POSITION) {
+			Point2D newPosition = new Point2D(getPosition().getX(), getPosition().getY() + 1);
+			setPosition(newPosition);
+			checkForPlayer();
+		}
+	}
+	
+	private void checkForPlayer() {
+		Room currentRoom = GameEngine.getInstance().getCurrentRoom();
+		List<GameObject> room = currentRoom.getRoom();
+		
+		for (GameObject obj : room) {
+			if (obj.isAttackable() && obj.getPosition().equals(getPosition())) {
+				Character c = (Character) obj;
+				c.updateHealth(- this.damage);
+			}
+		}
 	}
 	
 	@Override
 	public boolean isCrossable() {
 		return true;
-	}
-	
-	@Override
-	public boolean isClimbable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isAttackable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isCollectable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isTrap() {
-		return false;
-	}
-	
-	@Override
-	public boolean isObjective() {
-		return false;
 	}
 	
 	@Override
