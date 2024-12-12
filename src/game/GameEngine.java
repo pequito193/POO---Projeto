@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -69,6 +70,10 @@ public class GameEngine implements Observer {
 			if (Direction.isDirection(k)) {
 				//System.out.println("Direction! ");
 				currentRoom.move(Direction.directionFor(k));
+			}
+			
+			else if (k == KeyEvent.VK_B) {
+				this.currentRoom.dropBomb();
 			}
 		}
 		int t = ImageGUI.getInstance().getTicks();

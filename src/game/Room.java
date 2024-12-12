@@ -8,6 +8,8 @@ import java.util.Scanner;
 
 import gameObjects.Background;
 import gameObjects.Banana;
+import gameObjects.BombCollectable;
+import gameObjects.BombProjectile;
 import gameObjects.DonkeyKong;
 import gameObjects.Door;
 import gameObjects.GameObject;
@@ -92,6 +94,9 @@ public class Room {
 				case 'm':
 					this.room.add(new Meat(position));
 					break;
+				case 'b':
+					this.room.add(new BombCollectable(position));
+					break;
 				case '0':
 					this.room.add(new Door(position));
 					break;
@@ -141,6 +146,7 @@ public class Room {
 	public void updateObjects() {
 		checkFall();
 		moveDK();
+		updateBombs();
 	}
 	
 	private void checkFall() {
@@ -173,5 +179,13 @@ public class Room {
 				dk.updateBananas();
 			}
 		}
+	}
+	
+	private void updateBombs() {
+		this.player.updateBombs();
+	}
+	
+	public void dropBomb() {
+		this.player.dropBomb();
 	}
 }

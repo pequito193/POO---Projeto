@@ -4,12 +4,10 @@ import java.util.List;
 
 import game.GameEngine;
 import game.Room;
-import pt.iscte.poo.gui.ImageGUI;
-import utils.Direction;
 import utils.Point2D;
 import utils.Utils;
 
-public class Character extends GameObject {
+public abstract class Character extends GameObject {
 	private int health;
 	private int damage;
 	private static final int LAYER = 2;
@@ -78,6 +76,11 @@ public class Character extends GameObject {
 				else if (o.getClass() == Sword.class) {
 					Sword sword = (Sword) o;
 					sword.updateStats(this);
+				}
+				
+				else if (o.getClass() == BombCollectable.class) {
+					BombCollectable bomb = (BombCollectable) o;
+					bomb.updateStats(this);
 				}
 				
 				return;
