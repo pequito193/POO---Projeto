@@ -96,4 +96,9 @@ public class DonkeyKong extends Character {
 		ImageGUI.getInstance().removeImage(this);
 		GameEngine.getInstance().getCurrentRoom().removeGameObject(this);
 	}
+	
+	@Override
+	public boolean isEnemy() {
+		return true;
+	}
 }

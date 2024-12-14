@@ -3,7 +3,7 @@ package gameObjects;
 import utils.Point2D;
 
 public class BombCollectable extends Collectable {
-	private static final String NAME = "Green";
+	private static final String NAME = "Bomb";
 	
 	public BombCollectable(Point2D startingPosition) {
 		super(NAME, startingPosition);
@@ -11,8 +11,8 @@ public class BombCollectable extends Collectable {
 	
 	@Override
 	public void updateStatsImplementation(Character character) {
-		// Se o DK tocar na bomba ela só desaparece
-		if (character.getClass() == DonkeyKong.class) {
+		// Se um inimigo tocar na bomba ela só desaparece
+		if (character.getClass() != Player.class) {
 			return;
 		}
 		

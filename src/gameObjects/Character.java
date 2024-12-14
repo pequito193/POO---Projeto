@@ -46,13 +46,13 @@ public abstract class Character extends GameObject {
 			}
 			
 			// Check attackable
-			if (o.isAttackable()) {
+			if (o.isAttackable() && !(isEnemy() && o.isEnemy())) {
 				Character character = (Character) o;
 				character.updateHealth(- this.damage);
 			}
 			
 			// Check objective
-			if (o.isObjective() && canWin) {
+			if (o.isObjective() && this.canWin) {
 				if (o.getClass() == Door.class) {
 					Door door = (Door) o;
 					door.finishRoom(roomNumber);

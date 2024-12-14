@@ -18,6 +18,7 @@ public class GameEngine implements Observer {
 	private List<Room> roomList;
 	private Room currentRoom;
 	private int lastTickProcessed = 0;
+	private long startTime;
 	
 	private GameEngine() {
 		ImageGUI.getInstance().update();
@@ -26,8 +27,16 @@ public class GameEngine implements Observer {
 		resetGame();
 	}
 	
+	public int getRunDurationInSeconds() {
+		long currentTime = System.currentTimeMillis();
+		
+		return (int) ((currentTime - this.startTime) / 1000);
+	}
+	
 	public void resetGame() {
+		ImageGUI.getInstance().clearImages();
 		this.roomList.clear();
+		this.startTime = System.currentTimeMillis();
 		
 		Room room0 = new Room(new File("././rooms/room0.txt"), 0);
 		Room room1 = new Room(new File("././rooms/room1.txt"), 1);

@@ -6,7 +6,7 @@ import pt.iscte.poo.gui.ImageTile;
 import utils.Point2D;
 
 public abstract class GameObject implements ImageTile {
-	private final String name;
+	private String name;
 	private Point2D position;
 	private final int layer;
 	
@@ -28,9 +28,17 @@ public abstract class GameObject implements ImageTile {
 		return this.layer;
 	}
 	
+	public void setName(String newName) {
+		this.name = newName;
+	}
 	
 	public void setPosition(Point2D newPosition) {
 		this.position = newPosition;
+	}
+	
+	public void redrawObject() {
+		ImageGUI.getInstance().removeImage(this);
+		ImageGUI.getInstance().addImage(this);
 	}
 	
 	public void deleteObject() {
@@ -68,6 +76,10 @@ public abstract class GameObject implements ImageTile {
 	}
 	
 	public boolean isFallable() {
+		return false;
+	}
+	
+	public boolean isEnemy() {
 		return false;
 	}
 }

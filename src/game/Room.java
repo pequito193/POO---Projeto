@@ -7,14 +7,15 @@ import java.util.List;
 import java.util.Scanner;
 
 import gameObjects.Background;
-import gameObjects.Banana;
+import gameObjects.Bat;
 import gameObjects.BombCollectable;
-import gameObjects.BombProjectile;
 import gameObjects.DonkeyKong;
 import gameObjects.Door;
 import gameObjects.GameObject;
+import gameObjects.HiddenTrap;
 import gameObjects.Ladder;
 import gameObjects.Meat;
+import gameObjects.NormalTrap;
 import gameObjects.Player;
 import gameObjects.Princess;
 import gameObjects.Sword;
@@ -73,7 +74,10 @@ public class Room {
 					this.room.add(new Wall(position));
 					break;
 				case 't':
-					this.room.add(new Trap(position));
+					this.room.add(new NormalTrap(position));
+					break;
+				case 'T':
+					this.room.add(new HiddenTrap(position));
 					break;
 				case 'S':
 					this.room.add(new Ladder(position));
@@ -83,6 +87,9 @@ public class Room {
 					break;
 				case 'G':
 					this.room.add(new DonkeyKong(position));
+					break;
+				case 'B':
+					this.room.add(new Bat(position));
 					break;
 				case 'H':
 					this.player = new Player(position);
@@ -147,6 +154,8 @@ public class Room {
 		checkFall();
 		moveDK();
 		updateBombs();
+		spoilMeat();
+		moveBats();
 	}
 	
 	private void checkFall() {
@@ -181,8 +190,26 @@ public class Room {
 		}
 	}
 	
+	private void moveBats() {
+		for (GameObject obj : this.room) {
+			if (obj.getClass() == Bat.class) {
+				Bat bat = (Bat) obj;
+				bat.doSomething();
+			}
+		}
+	}
+	
 	private void updateBombs() {
 		this.player.updateBombs();
+	}
+	
+	private void spoilMeat() {
+		for (GameObject obj : this.room) {
+			if (obj.getClass() == Meat.class) {
+				Meat m = (Meat) obj;
+				m.slowlySpoil();
+			}
+		}
 	}
 	
 	public void dropBomb() {

@@ -13,7 +13,7 @@ public abstract class Goal extends GameObject {
 	
 	@Override
 	public boolean isCrossable() {
-		return true;
+		return false;
 	}
 	
 	@Override

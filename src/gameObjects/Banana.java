@@ -8,7 +8,7 @@ import pt.iscte.poo.gui.ImageGUI;
 import utils.Point2D;
 
 public class Banana extends GameObject {
-	private static final String NAME = "King";
+	private static final String NAME = "Banana";
 	private static final int LAYER = 2;
 	private int damage;
 	

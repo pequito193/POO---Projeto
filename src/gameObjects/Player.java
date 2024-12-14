@@ -13,16 +13,31 @@ public class Player extends Character {
 	private static final int BASE_DAMAGE = 20;
 	private static final boolean CAN_WIN = true;
 	private List<BombProjectile> bombs;
+	private Point2D startingPosition;
+	private int livesLeft;
 	
 	public Player(Point2D startingPosition) {
 		super(NAME, startingPosition, BASE_HEALTH, BASE_DAMAGE, CAN_WIN);
 		this.bombs = new ArrayList<BombProjectile>();
+		this.startingPosition= startingPosition;
+		this.livesLeft = 3;
+	}
+	
+	private void loseLife() {
+		if (this.livesLeft > 1) {
+			this.livesLeft--;
+			setPosition(this.startingPosition);
+			updateHealth(BASE_HEALTH);
+		}
+		
+		else {
+			GameEngine.getInstance().resetGame();
+		}
 	}
 	
 	@Override
 	public void deleteObject() {
-		ImageGUI.getInstance().clearImages();
-		GameEngine.getInstance().resetGame();
+		loseLife();
 	}
 	
 	public void pickupBomb() {

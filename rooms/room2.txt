@@ -1,11 +1,11 @@
 #0;room3.txt
-WPG  G    
+P G  G    
 WWWWWWWWWS
          S
-SWWW tt WW
+SWWW Tt WW
 S         
 SWWWWW  WW
 S  b      
 WWWWWWWSWW
-   H   S   
+   H   S  
 WWWWWWWWWW

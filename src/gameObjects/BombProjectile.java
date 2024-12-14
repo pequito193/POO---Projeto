@@ -13,24 +13,30 @@ public class BombProjectile extends GameObject {
 		DROPPED_1,
 		DROPPED_2,
 		DROPPED_3,
-		EXPLODE_1,
-		EXPLODE_2,
+		DROPPED_4,
+		EXPLODE,
 		
 		GONE,
 	}
 	
 	private static final int BOMB_DAMAGE = 100;
-	private static final int LAYER = 2;
-	private static final String NAME = "Red";
+	private static final int LAYER = 1;
+	private static final String NAME = "Bomb";
 	private BombState state;
 	private boolean hasBeenUsed;
 	private List<Fire> animation;
+	private List<Point2D> radius;
 	
 	public BombProjectile(Point2D startPosition) {
 		super(NAME, startPosition, LAYER);
 		this.state = BombState.HELD;
 		this.hasBeenUsed = false;
 		this.animation = new ArrayList<Fire>();
+	}
+	
+	private void updateRadius() {
+		this.radius = getPosition().getNeighbourhoodPoints();
+		this.radius.add(getPosition());
 	}
 	
 	public void dropBomb(Point2D position) {
@@ -45,7 +51,6 @@ public class BombProjectile extends GameObject {
 	}
 	
 	public void updateState() {
-		System.out.println(this.state);
 		switch(this.state) {
 			case HELD:
 				break;
@@ -56,12 +61,12 @@ public class BombProjectile extends GameObject {
 				this.state = BombState.DROPPED_3;
 				break;
 			case DROPPED_3:
-				this.state = BombState.EXPLODE_1;
+				this.state = BombState.DROPPED_4;
 				break;
-			case EXPLODE_1:
-				this.state = BombState.EXPLODE_2;
+			case DROPPED_4:
+				this.state = BombState.EXPLODE;
 				break;
-			case EXPLODE_2:
+			case EXPLODE:
 				explodeAnimation(true);
 				explode();
 				this.state = BombState.GONE;
@@ -75,12 +80,14 @@ public class BombProjectile extends GameObject {
 	}
 	
 	private void explodeAnimation(boolean startAnimation) {
-		List<Point2D> radius = getPosition().getNeighbourhoodPoints();
+		updateRadius();
 		
 		if (startAnimation) {
-			for (Point2D position : radius) {
+			for (Point2D position : this.radius) {
 				this.animation.add(new Fire(position));
 			}
+			
+			ImageGUI.getInstance().removeImage(this);
 			
 			for (Fire f : this.animation) {
 				ImageGUI.getInstance().addImage(f);

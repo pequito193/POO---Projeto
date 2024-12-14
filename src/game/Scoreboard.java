@@ -11,34 +11,34 @@ import utils.IntegerAscendingComparator;
 import utils.Utils;
 
 public class Scoreboard {
-	public static enum Stage {
-		ONE,
-		TWO,
-		THREE,
-	};
+	private static final String FILE = "scoreboard.txt";
 	
-	public static void saveScore(Stage stage, int time) {
+	public static void saveScore(int time) {
 		try {
-			PrintWriter writer = new PrintWriter(new File("scores.txt"));
-			List<Integer> savedScores = readAllScores(stage);
+			List<Integer> savedScores = readAllScores();
+			PrintWriter writer = new PrintWriter(new File(FILE));
 			savedScores.add(time);
 			
 			for (int score : savedScores) {
 				writer.println(score);
 			}
 			
+			writer.close();
+			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public static List<String> getHighscores(Stage stage) {
+	public static List<String> getHighscores() {
 		List<String> allScoresString = new ArrayList<>();
-		List<Integer> allScores = readAllScores(stage);
+		List<Integer> allScores = readAllScores();
 		
 		allScores.sort(new IntegerAscendingComparator());
 		
-		for (int i = 0; i < 10; i++) {
+		int length = allScores.size() < 10 ? allScores.size() : 10;
+		
+		for (int i = 0; i < length; i++) {
 			String scoreString = Utils.timeToString(allScores.get(i));
 			allScoresString.add(scoreString);
 		}
@@ -46,31 +46,22 @@ public class Scoreboard {
 		return allScoresString;
 	}
 	
-	private static List<Integer> readAllScores(Stage stage) {
+	private static List<Integer> readAllScores() {
 		List<Integer> timeList = new ArrayList<>();
 		try {
-			String filename = getScoreFile(stage);
-			Scanner scanner = new Scanner(new File(filename));
+			Scanner scanner = new Scanner(new File(FILE));
 			
 			while(scanner.hasNextLine()) {
-				timeList.add(scanner.nextInt());
+				String time = scanner.nextLine();
+				timeList.add(Integer.parseInt(time));
 			}
+			
+			scanner.close();
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		
 		return timeList;
-	}
-	
-	private static String getScoreFile(Stage stage) {		
-		switch(stage) {
-			case ONE:
-				return "stage1_scores.txt";
-			case TWO:
-				return "stage2_scores.txt";
-			default:
-				return "stage3_scores.txt";
-		}
 	}
 }
